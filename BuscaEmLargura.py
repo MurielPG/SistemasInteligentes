@@ -3,7 +3,7 @@ import numpy as np
 
 #print(list(q.queue))
 
-def criaLab():
+def criaLab2():
     labirinto = np.array([
     [1, 1, 1, 1, 1, 1, 1, 1, 2],
     [1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -15,21 +15,20 @@ def criaLab():
     [1, 0, 1, 1, 1, 1, 0, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 1, 1],
     [1, 1, 1, 3, 1, 1, 1, 1, 1]])
-
     return labirinto
-def criaLab2():
-    labirinto = np.array([
-    [1, 1, 1, 1, 1, 1, 1, 1, 2],
-    [1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 0],
-    [1, 1, 1, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 0, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 1, 1, 0, 1, 1],
-    [1, 0, 1, 1, 1, 1, 0, 1, 1],
-    [1, 0, 1, 1, 1, 1, 0, 1, 1],
-    [1, 0, 0, 0, 0, 0, 0, 1, 1],
-    [1, 1, 1, 3, 1, 1, 1, 1, 1]])
 
+def criaLab():
+    labirinto = np.array([
+    [1, 1, 1, 1, 0, 0, 0, 1, 2],
+    [1, 1, 1, 1, 0, 1, 0, 1, 0],
+    [1, 1, 1, 1, 0, 1, 0, 0, 0],
+    [1, 1, 1, 1, 0, 1, 1, 1, 1],
+    [1, 1, 1, 1, 0, 1, 1, 1, 1],
+    [1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 0, 1, 1, 1, 1, 0],
+    [1, 1, 1, 0, 1, 1, 1, 1, 0],
+    [1, 1, 1, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 3, 1, 1, 1, 1, 1]])
     return labirinto
 
 def coordenada_inicio(labirinto):
@@ -64,6 +63,8 @@ def coordenadas(lab, caminho):
 
     l, c = coordenada_inicio(lab)
     for passo in caminho:
+        if passo == "C":
+            l-=1
         if passo == "B":
             l+=1
         if passo == "E":
@@ -91,6 +92,10 @@ def encontraCaminho(lab, l, c, caminho):
         add = caminho + "D"
         if not visitado(caminho):
             fila.put(add)
+    if posicaoValida(lab, l-1, c): #cima
+        add = caminho + "C"
+        if not visitado(caminho):
+            fila.put(add)
 
 def visitado(caminho):
     if len(caminho) < 3:
@@ -99,14 +104,18 @@ def visitado(caminho):
         return True
     if (caminho[-1] == "D" and caminho[-2] == "E"):
         return True
+    if (caminho[-1] == "C" and caminho[-2] == "B"):
+        return True
+    if (caminho[-1] == "B" and caminho[-2] == "C"):
+        return True
     return False
 
 def imprimeLabirinto(lab, caminho):
     if caminho is None:
         return False
-
+    caminho_ = caminho[:-1]
     l, c = coordenada_inicio(lab)
-    for passo in caminho:
+    for passo in caminho_:
         if passo == "B":
             l+=1
             lab[l][c] = 8
@@ -116,6 +125,10 @@ def imprimeLabirinto(lab, caminho):
         if passo == "D":
             c+=1 
             lab[l][c] = 8
+        if passo == "C":
+            l-=1 
+            lab[l][c] = 8
+        
     return lab
 
 
