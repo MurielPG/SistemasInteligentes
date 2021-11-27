@@ -1,9 +1,13 @@
 import queue
 import numpy as np
 
-#print(list(q.queue))
+# para o labirinto, necessariamente precisa ter um tamanho de no maximo 9x9
+# o labirinto consiste em uma matriz de arrays inteiros
+# valores 1 sao considerados obstaculos ou paredes, 2 onde inicia, 3 onde termina
+# os valores 0 sao caminhos possiveis para percorrer
+# foi utilizado um sistema de fila FIFO
 
-def criaLab2():
+def criaLab1():
     labirinto = np.array([
     [1, 1, 1, 1, 1, 1, 1, 1, 2],
     [1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -131,13 +135,11 @@ def imprimeLabirinto(lab, caminho):
         
     return lab
 
-
 labirinto = criaLab()
 linha, coluna = coordenada_inicio(labirinto)
 
 fila = queue.Queue()
 fila.put("")
-caminho = ""
 
 while not encontraFinal(labirinto, linha, coluna):
     caminho = fila.get()
