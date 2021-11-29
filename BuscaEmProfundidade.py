@@ -1,3 +1,11 @@
+# para o labirinto, necessariamente precisa ter um tamanho de no maximo 9x9
+# o labirinto consiste em uma matriz de arrays inteiros
+# valores 1 sao considerados obstaculos ou paredes, 2 onde inicia, 3 onde termina
+# os valores 0 sao caminhos possiveis para percorrer, 
+# inicia na primeira linha e termina na ultima linha, caminho nunca sobe, apenas desce e translada
+# por fim, o melhor caminho eh representado por 8
+
+
 import numpy as np
 import queue
 
@@ -49,7 +57,6 @@ class Tree:
             return self._find(val, node.r)
 
     def deleteTree(self):
-        # garbage collector will do this for us. 
         self.root = None
 
     def printTree(self):
@@ -77,8 +84,6 @@ def criaLab():
     [1, 0, 1, 1, 1, 1, 0, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 1, 1],
     [1, 1, 1, 3, 1, 1, 1, 1, 1]])
-#valores 0, sao caminhos, 2 onde inicia, 3 onde termina, 1s sao barreiras
-#matriz 10x10, inicia na primeira linha e termina na ultima linha, caminho nunca sobe, apenas desce e translada
    
     return labirinto
 
@@ -136,14 +141,14 @@ def procuraCaminho(lab, l_, c_, tree):
         testaChegada(lab, l, c)
         tree.add( (l)*10 + (c) )
         return l, c
+    
     return False
 
 def imprimeLabirinto(lab, fila):
-    a = fila.qsize()
-    for _ in range(a-1):
+    for _ in range(fila.qsize()-1):
         pos = fila.get()
         if pos == 2:
-            l, c = coordenada_inicio()
+            continue
         if pos < 10:
             l = 0
             c = pos
@@ -153,12 +158,10 @@ def imprimeLabirinto(lab, fila):
         lab[l][c] = 8
     print(lab)
     
-
 def testaChegada(lab, l, c):
     if (lab[l][c] == 3):
         return True
     return False
-
 
 labirinto = criaLab()
 l_, c_ = coordenada_inicio()
@@ -168,5 +171,4 @@ while not testaChegada(labirinto, l_, c_):
     l_, c_ = procuraCaminho(labirinto, l_, c_, arvore)
 
 arvore.printTree()
-print(list(fila.queue))
 imprimeLabirinto(labirinto, fila)
