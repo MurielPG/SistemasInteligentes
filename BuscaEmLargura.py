@@ -1,11 +1,13 @@
-import queue
-import numpy as np
-
 # para o labirinto, necessariamente precisa ter um tamanho de no maximo 9x9
 # o labirinto consiste em uma matriz de arrays inteiros
 # valores 1 sao considerados obstaculos ou paredes, 2 onde inicia, 3 onde termina
 # os valores 0 sao caminhos possiveis para percorrer
-# foi utilizado um sistema de fila FIFO
+# por fim, o melhor caminho eh representado por 8
+
+
+import queue
+import numpy as np
+
 
 def criaLab1():
     labirinto = np.array([
@@ -77,8 +79,7 @@ def coordenadas(lab, caminho):
             c+=1 
         if not(0 <= l <= 9 and 0 <= c <= 9):
             return False
-        elif (lab[l][c] == "#"):
-            return False
+ 
     return l, c
 
 def encontraCaminho(lab, l, c, caminho):
@@ -140,6 +141,7 @@ linha, coluna = coordenada_inicio(labirinto)
 
 fila = queue.Queue()
 fila.put("")
+caminho = ""
 
 while not encontraFinal(labirinto, linha, coluna):
     caminho = fila.get()
