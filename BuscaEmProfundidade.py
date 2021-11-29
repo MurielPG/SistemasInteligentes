@@ -1,8 +1,7 @@
 # para o labirinto, necessariamente precisa ter um tamanho de no maximo 9x9
 # o labirinto consiste em uma matriz de arrays inteiros
 # valores 1 sao considerados obstaculos ou paredes, 2 onde inicia, 3 onde termina
-# os valores 0 sao caminhos possiveis para percorrer, 
-# inicia na primeira linha e termina na ultima linha, caminho nunca sobe, apenas desce e translada
+# os valores 0 sao caminhos possiveis para percorrer
 # por fim, o melhor caminho eh representado por 8
 
 
@@ -73,7 +72,7 @@ class Tree:
             self._printTree(node.r)
         
 
-def criaLab():
+def criaLab1():
     labirinto = np.array([
     [1, 1, 1, 1, 1, 1, 1, 1, 2],
     [1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -86,6 +85,21 @@ def criaLab():
     [1, 1, 1, 3, 1, 1, 1, 1, 1]])
    
     return labirinto
+
+def criaLab():
+    labirinto = np.array([
+    [1, 1, 1, 1, 1, 1, 1, 1, 2],
+    [1, 1, 1, 0, 0, 0, 0, 1, 0],
+    [1, 1, 1, 0, 1, 1, 0, 1, 0],
+    [1, 1, 1, 0, 1, 1, 0, 0, 0],
+    [1, 1, 1, 0, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 1, 1, 0, 1, 1],
+    [1, 0, 1, 1, 1, 1, 0, 1, 1],
+    [1, 0, 0, 0, 0, 0, 0, 1, 1],
+    [1, 1, 1, 3, 1, 1, 1, 1, 1]])
+   
+    return labirinto
+
 
 
 def matrizCoordenada():    
@@ -122,9 +136,7 @@ def posicaoValida(lab, x_, y_, tree):
         return False
     return True
     
-def procuraCaminho(lab, l_, c_, tree):
-    l = l_
-    c = c_
+def procuraCaminho(lab, l, c, tree):
     if ( posicaoValida(lab, l+1, c, tree )): #baixo
         l+=1
         testaChegada(lab, l, c)
@@ -138,6 +150,12 @@ def procuraCaminho(lab, l_, c_, tree):
 
     elif ( posicaoValida(lab, l, c-1, tree )): #esquerda
         c-=1
+        testaChegada(lab, l, c)
+        tree.add( (l)*10 + (c) )
+        return l, c
+
+    elif ( posicaoValida(lab, l-1, c, tree )): #cima
+        l-=1
         testaChegada(lab, l, c)
         tree.add( (l)*10 + (c) )
         return l, c
